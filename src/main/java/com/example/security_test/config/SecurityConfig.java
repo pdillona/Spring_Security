@@ -44,11 +44,39 @@ public class SecurityConfig {
               
                 
                 /*
-                permitAll: 모든 사용자 에게 로그인 없이도 허용
-                hasRole: 특정 Role이 있어야 로그인 후에 해당 경로에 접근 가능
-                authenticated: 로그인 완료후 접근가능
-                denyAll: 로그인 여부와 관계 없이 접근 불가
+                    permitAll: 모든 사용자 에게 로그인 없이도 허용
+                    hasRole: 특정 Role이 있어야 로그인 후에 해당 경로에 접근 가능
+                    authenticated: 로그인 완료후 접근가능
+                    denyAll: 로그인 여부와 관계 없이 접근 불가
                 */
+        
+        http
+                .formLogin((auth) -> auth.loginPage("/login")
+                        .loginProcessingUrl("/loginProc")
+                        .permitAll()
+                ); 
+        
+                /*
+                    - auth의 loginPage라는 메서드를 통해서 로그인 페이지 경로를 설정해 줄 수 있다.
+                    로그인 페이지 설정이 완료되면 스프링 부트에서 자동으로 login 페이지로 보내준다.
+                    
+                    - loginProcessingUrl는 security가 login에서 날아오는 Form Action Url 요청에 대해 어디로 보낼 것인지 설정해 준다.
+                    
+                    - spring security는 가입된 아이디가 없어도 자동으로 한개의 id와 password를 생성해 준다. id는 user pw는 console창에 명시해준다.
+                    
+                    - form인증 관련 메서드 
+                    https://velog.io/@gmtmoney2357/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-Form-Login-%EC%9D%B8%EC%A6%9D
+                */
+                
+        http
+                .csrf((auth) -> auth.disable());
+                /*
+                    - csrf라는 사이트 위변조 방지 설정이 security에는 자동으로 설정 되어 있는데 이 csrf설정이 걸려 있을 때 post요청이 발생하면 
+                    요청과 함께 csrf토큰도 함께 보내야 요청이 진행 된다.
+                    
+                    * 현재 개발 환경에서는 csrf 토큰에 관한 설정이 되어 있지 않기 때문에 csrf를 비활성화  시켜 놓았다.
+                */
+        
         
         
         return http.build(); // HttpSecurity를 빌더 타입으로 리턴 해준다.
