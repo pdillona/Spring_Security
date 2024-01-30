@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration //configuration 클래스로 등록하기 위한 annotation
@@ -11,12 +12,33 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     
     @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+     
+               /*
+                    - security는 사용자 인증시(로그인) 비밀번호에 대해 단방향 해시 암호화를 진행하여 저장되 있는 비밀번호와 대조한다.
+                    때문에 회원가입시 비밀번호가 암호화 되어 들어가도록 설정할 필요가있다. 이를 위해 spring security는 Bcrypt Password Encorder라는 암호화 도구를
+                    제공한다. 해당 class를 이요하여 메소드를 만들어 @Bean으로 등록해 사용 하여 암호화를 진행한다.
+                    
+                    * 해시와 암호화
+                    - 둘 다 암호화 기법이지만 Hash는 단방향 암호화 기법이고 Encryption은 양방향 암호화 기법이다.
+                      쉽게 설명하면 Hash는 평문을 암호화된 문장(텍스트)으로 만들어주는 기능을 하고,
+                      Encryption은 평문을 암호화된 문장(텍스트)로 만들어주는 기능을 하고 + 암호화된 문장을 다시 평문으로 만드는 복호화 기능도 한다.
+                      [암호화에는 단방향과 양방향 암호화가 있으며 단방향은 해시와 같은 암호화 기능만을 하며 양방향은 복호화 기능을 포함한다.]
+                      
+                      출처: https://jeong-pro.tistory.com/92
+                */
+        
+        return new BCryptPasswordEncoder();
+    }
+    
+    
+    @Bean
     public SecurityFilterChain securityFilter(HttpSecurity http)throws Exception{  
         
         http
                 // SpringBoot 3.1버전 부터 람다식으로 작성 해야한다.
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/","/login").permitAll() // requestMatchers 요청에 관한 설정 () 내부에 경로를 명시후 .으로 연결하여 규칙 설정.
+                        .requestMatchers("/","/login", "/loginProc" ,"/join", "/joinProc").permitAll() // requestMatchers 요청에 관한 설정 () 내부에 경로를 명시후 .으로 연결하여 규칙 설정.
                         .requestMatchers("/admin").hasRole("admin")
                         .requestMatchers("/my/**").hasAnyRole("admin","user") // my/ 뒤에 user아이디가 붙는다 가정 모든 아이디를 여기 적을수는 없기 때문에 와이드인 ** 를 사용해 설정해 준다.
                         .anyRequest().authenticated()    // anyRequest로 requestMatchers 에서 처리하지 못한 경로들에 대해 한번에 처리 가능. 
@@ -76,6 +98,8 @@ public class SecurityConfig {
                     
                     * 현재 개발 환경에서는 csrf 토큰에 관한 설정이 되어 있지 않기 때문에 csrf를 비활성화  시켜 놓았다.
                 */
+        
+         
         
         
         
