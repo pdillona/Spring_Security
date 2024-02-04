@@ -1,6 +1,7 @@
 package com.example.security_test.entity;
 
 import jakarta.persistence.*;
+import jdk.jfr.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,13 +11,13 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
-@Table(name="User2")
+//@Table(name="User2")
 public class UserEntity {
     
    
     /*   @GeneratedValue(strategy = GenerationType.IDENTITY) // 아이디가 자동으로 생성되기 위한 어노테이션, IDENTITY 방식의 전략으로 생성
     private String id;*/
-    @Id   // 필수로 필요한 아이디값
+ /*   @Id   // 필수로 필요한 아이디값
     private String uid;
     private String pass;
     
@@ -27,5 +28,18 @@ public class UserEntity {
     private LocalDateTime regDate;
     
     private String role;
+    */
+    @Id   // 필수로 필요한 아이디값
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(unique = true)
+    private String username;
+
+    private String password;
+    private String role;
+    
+    @Timestamp
+    private LocalDateTime regDate;
     
 }

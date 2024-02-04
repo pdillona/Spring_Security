@@ -38,7 +38,6 @@ public class JoinController {
     // 생성자 주입 방식으로 의존성 주입을한 모습
     private final JoinService joinService;  
 
-    @Autowired
     public JoinController(JoinService joinService) {
         this.joinService = joinService;
     }

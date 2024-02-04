@@ -39,8 +39,8 @@ public class SecurityConfig {
                 // SpringBoot 3.1버전 부터 람다식으로 작성 해야한다.
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/","/login", "/loginProc" ,"/join", "/joinProc").permitAll() // requestMatchers 요청에 관한 설정 () 내부에 경로를 명시후 .으로 연결하여 규칙 설정.
-                        .requestMatchers("/admin").hasRole("admin")
-                        .requestMatchers("/my/**").hasAnyRole("admin","user") // my/ 뒤에 user아이디가 붙는다 가정 모든 아이디를 여기 적을수는 없기 때문에 와이드인 ** 를 사용해 설정해 준다.
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/my/**").hasAnyRole("ADMIN","USER") // my/ 뒤에 user아이디가 붙는다 가정 모든 아이디를 여기 적을수는 없기 때문에 와이드인 ** 를 사용해 설정해 준다.
                         .anyRequest().authenticated()    // anyRequest로 requestMatchers 에서 처리하지 못한 경로들에 대해 한번에 처리 가능. 
                 );  // 권한 설정이 끝나는 ; 이후 http가 build되어 return되면 접근 권한이 적용/진행 된다.
                 
