@@ -16,7 +16,16 @@ public class CustomUserDetails implements UserDetails {
 
         this.userEntity = userEntity;
     }
-
+    /*
+    * getAuthorities() : 계정이 가지고 있는 권한 목록 리턴
+      getPassword() : 계정의 비밀번호 리턴
+      getUsername() : 계정 이름 리턴
+      isAccountNonExpired() : 계정이 만료됐는지 리턴 -> true는 완료되지 않음 의미
+      isAccountNonLocked() : 계정이 잠겨있는지 리턴 -> true는 잠기지 않음
+      isCredentialNonExpired() : 비밀번호가 만료됐는지 리턴 -> true는 만료X 의미
+      isEnabled() : 계정이 활성화돼 있는지 리턴 -> true는 활성화 상태 의미
+    * 
+    */
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
